@@ -1,5 +1,5 @@
-import getWeatherData from './assets/scripts/api'
+import getWeatherData from './scripts/api'
+import './styles.css'
+import { createDomStructure } from './scripts/dom'
 
-const city = 'Warsaw'
-const weatherData = await getWeatherData(city)
-console.log(weatherData)
+createDomStructure()
