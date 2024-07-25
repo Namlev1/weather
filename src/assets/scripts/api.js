@@ -1,70 +1,79 @@
-const BASE_URL = 'https://api.openweathermap.org/data/2.5/weather?'
-const KEY = '9fb2da87e60bc2656c1083417596f171'
-const params = {
-  appid: KEY,
+import { addDays, isAfter, parse, startOfToday } from 'date-fns'
+
+const API_BASE_URL = 'https://api.openweathermap.org/data/2.5/'
+const WEATHER_URL = `${API_BASE_URL}weather?`
+const FORECAST_URL = `${API_BASE_URL}forecast?`
+const API_KEY = '9fb2da87e60bc2656c1083417596f171'
+const DEFAULT_PARAMS = {
+  appid: API_KEY,
   units: 'metric'
 }
 
-function getWindDirection(degree) {
-  if (degree > 337.5 || degree <= 22.5) {
-    return 'North'
-  }
-  if (degree > 22.5 && degree <= 67.5) {
-    return 'Northeast'
-  }
-  if (degree > 67.5 && degree <= 112.5) {
-    return 'East'
-  }
-  if (degree > 112.5 && degree <= 157.5) {
-    return 'Southeast'
-  }
-  if (degree > 157.5 && degree <= 202.5) {
-    return 'South'
-  }
-  if (degree > 202.5 && degree <= 247.5) {
-    return 'Southwest'
-  }
-  if (degree > 247.5 && degree <= 292.5) {
-    return 'West'
-  }
-  return 'Northwest'
+function extractHourly(data) {
+  const { list } = data
+  const extracted = list.slice(0, 5)
+  return extracted
 }
 
-function processData(data) {
-  const date = new Date(data.dt * 1000)
-  const windDirection = getWindDirection(data.wind.deg)
-  const sunrise = new Date(data.sys.sunrise * 1000)
-  const sunset = new Date(data.sys.sunset * 1000)
-  const returnData = {
-    icon: data.weather[0].icon,
-    temperature: data.main.temp,
-    description: data.weather[0].description,
-    date,
-    city: data.name,
-    real: data.main.feels_like,
-    min: data.main.temp_min,
-    max: data.main.temp_max,
-    wind: {
-      speed: data.wind.speed,
-      direction: windDirection
-    },
-    humidity: data.main.humidity,
-    pressure: data.main.pressure,
-    visibility: data.visibility,
-    clouds: data.clouds.all,
-    sunrise,
-    sunset,
-    lon: data.coord.lon,
-    lat: data.coord.lat
+function extractDaily(data) {
+  const tomorrowStart = addDays(startOfToday(), 1)
+  return data.list.filter(forecast => {
+    const day = parse(forecast.dt_txt, 'yyyy-MM-dd HH:mm:ss', new Date())
+    return day.getHours() === 15 && isAfter(day, tomorrowStart)
+  })
+}
+
+function formatData(item) {
+  const { temp, humidity } = item.main
+  const { main: desc } = item.weather[0]
+  const { speed: wind } = item.wind
+  const date = new Date(item.dt * 1000)
+  return { temp, desc, wind, humidity, date }
+}
+
+function processCurrentWeather(data) {
+  return formatData(data)
+}
+
+function processNext4Days(data) {
+  return extractDaily(data).map(formatData)
+}
+
+function processHourly(data) {
+  return extractHourly(data).map(formatData)
+}
+
+function processForecast(data) {
+  const daily = processNext4Days(data)
+  const hourly = processHourly(data)
+  return {
+    daily,
+    hourly
   }
-  return returnData
+}
+
+async function fetchWeatherData(url, params) {
+  const response = await fetch(url + new URLSearchParams(params).toString())
+  return response.json()
+}
+
+async function getWeatherToday(city) {
+  const params = { ...DEFAULT_PARAMS, q: city }
+  const data = await fetchWeatherData(WEATHER_URL, params)
+  return processCurrentWeather(data)
+}
+
+async function getForecast(city) {
+  const params = { ...DEFAULT_PARAMS, q: city }
+  const data = await fetchWeatherData(FORECAST_URL, params)
+  return processForecast(data)
 }
 
 export default async function getWeatherData(city) {
-  params.q = city
-  const response = await fetch(
-    BASE_URL + new URLSearchParams(params).toString()
-  )
-  const json = await response.json()
-  return processData(json)
+  const today = await getWeatherToday(city)
+  const forecast = await getForecast(city)
+  return {
+    today,
+    forecast
+  }
 }
