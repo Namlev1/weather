@@ -5,6 +5,7 @@
     --gray: #696969;
     --light-gray: #B0B0B0;
     --input-background: #EDEDEF;
+    --card-border: #E5E5E5;
     font-family: Roboto, Arial, sans-serif;
     font-size: 36px;
 }
@@ -19,7 +20,8 @@ body {
     height: 100vh;
 }
 
-#main > * {
+#left,
+#right {
     padding: 1rem;
 }
 
@@ -37,7 +39,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    gap: 1rem;
 }
 
 #daily-forecast {
@@ -45,6 +47,7 @@ body {
     flex-direction: row;
     align-items: center;
     justify-content: center;
+    gap: 1rem;
 }
 
 .card {
@@ -52,8 +55,21 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    border: 2px solid var(--light-gray);
-    border-radius: 8px;
+    border: 2px solid var(--card-border);
+    border-radius: 16px;
+    padding: .5rem;
+}
+
+.card > * {
+    margin: 0;
+}
+
+.card > *:nth-child(1) {
+    font-size: 0.5rem;
+}
+
+.card > *:nth-child(2) {
+    color: var(--gray);
 }
 
 #input-wrap {
@@ -82,4 +98,46 @@ input {
     top: 50%;
     transform: translateY(-50%);
     cursor: pointer;
+}
+
+#today-forecast {
+    display: grid;
+    grid-template-rows: 1fr 50px 50px;
+    grid-template-columns: 65% 35%;
+}
+
+#main-temp {
+    color: var(--gray);
+    font-size: 8rem;
+    margin: 0;
+    font-weight: 500;
+    padding-left: 90px;
+    grid-area: 1 / 1 / 2 / 3;
+}
+
+#main-desc {
+    color: var(--gray);
+    font-size: 2rem;
+    font-weight: 500;
+    margin: 0;
+    grid-row: 2 / span 2;
+    justify-self: flex-end;
+}
+
+.today-param {
+    display: flex;
+    gap: .5rem;
+}
+
+.today-param > * {
+    margin: 0;
+}
+
+.today-param > img {
+    height: 100%;
+    padding-left: 1rem;
+}
+
+.today-param > p {
+    color: var(--gray);
 }
