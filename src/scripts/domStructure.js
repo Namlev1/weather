@@ -45,6 +45,7 @@ function createMainForecastDiv() {
 
   const windDiv = document.createElement('div')
   windDiv.classList.add('today-param')
+  windDiv.classList.add('wind')
   const windImg = document.createElement('img')
   windImg.alt = 'Wind image'
   windImg.src = Wind
@@ -55,6 +56,7 @@ function createMainForecastDiv() {
 
   const humidDiv = document.createElement('div')
   humidDiv.classList.add('today-param')
+  humidDiv.classList.add('humid')
   const humidImg = document.createElement('img')
   humidImg.alt = 'Wind image'
   humidImg.src = Drop

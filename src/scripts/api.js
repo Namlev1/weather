@@ -24,11 +24,13 @@ function extractDaily(data) {
 }
 
 function formatData(item) {
-  const { temp, humidity } = item.main
+  const temp = Math.round(item.main.temp)
+  const { humidity } = item.main
   const { main: desc } = item.weather[0]
-  const { speed: wind } = item.wind
+  const wind = Math.round(item.wind.speed * 10) / 10
   const date = new Date(item.dt * 1000)
-  return { temp, desc, wind, humidity, date }
+  const { icon } = item.weather[0]
+  return { temp, desc, wind, humidity, date, icon }
 }
 
 function processCurrentWeather(data) {
