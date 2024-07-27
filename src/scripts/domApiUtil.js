@@ -18,7 +18,7 @@ function fillTodayRight(today) {
   const max = div.querySelector(':nth-child(5)')
   max.textContent = `${today.max}°C`
   const city = document.querySelector('#city-right')
-  city.textContent = 'Warsaw' // TODO
+  city.textContent = 'Warsaw'
 }
 
 function fillToday(today) {
@@ -27,7 +27,7 @@ function fillToday(today) {
   const todayDesc = document.querySelector('#main-desc')
   todayDesc.textContent = `${today.desc}`
   const todayWind = document.querySelector('.wind > p')
-  todayWind.textContent = `${today.wind} km/h`
+  todayWind.textContent = `${today.wind} m/s`
   const todayHumid = document.querySelector('.humid > p')
   todayHumid.textContent = `${today.humidity}%`
   fillTodayRight(today)
@@ -51,7 +51,7 @@ function fillHourly(hourly) {
   const hourlyCards = document.querySelectorAll('#hourly-forecast > .card')
   hourlyCards.forEach((card, id) => {
     const time = card.querySelector(':nth-child(1)')
-    time.textContent = format(hourly[id].date, 'HH a')
+    time.textContent = format(hourly[id].date, 'h a')
     const dayTemp = card.querySelector(':nth-child(2)')
     dayTemp.textContent = `${hourly[id].temp}°C`
     const dayImg = card.querySelector('img')

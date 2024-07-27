@@ -2,6 +2,8 @@ import { format } from 'date-fns'
 import Magnify from '../assets/icons/magnify.svg'
 import Wind from '../assets/icons/wind.svg'
 import Drop from '../assets/icons/drop.svg'
+import Loading from '../assets/icons/loading.gif'
+import changeCity from './changeCity'
 
 const main = document.querySelector('#main')
 
@@ -30,17 +32,26 @@ function createInputDiv() {
   const cityInput = document.createElement('input')
   cityInput.type = 'text'
   cityInput.value = 'Warsaw'
+  cityInput.addEventListener('keydown', (e) =>  {
+    if (e.key === 'Enter') {
+      changeCity()
+    }
+  });
 
   const searchBtn = document.createElement('img')
   searchBtn.classList.add('search-btn')
   searchBtn.src = Magnify
   searchBtn.alt = 'Search button'
-  searchBtn.addEventListener('click', () => {
-    console.log(cityInput.value)
-  })
+  searchBtn.addEventListener('click', changeCity)
+
+  const load = document.createElement('img')
+  load.alt = 'Loading icon'
+  load.src = Loading
+  load.id = 'load'
 
   inputWrap.appendChild(cityInput)
   inputWrap.appendChild(searchBtn)
+  inputWrap.appendChild(load)
   return inputWrap
 }
 

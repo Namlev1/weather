@@ -219,3 +219,16 @@ input {
     box-sizing: border-box;
     border: 2px solid var(--card-border);
 }
+
+#load{
+    position: absolute;
+    right: -40px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 30px;
+    visibility: hidden;
+}
+
+#load.visible{
+    visibility: visible;
+}

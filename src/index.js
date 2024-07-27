@@ -5,5 +5,4 @@ import fillDomWithData from './scripts/domApiUtil'
 
 createDomStructure()
 const data = await getWeatherData('Warsaw')
-console.log(data)
 fillDomWithData(data)
