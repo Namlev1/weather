@@ -14,6 +14,10 @@ body {
     margin: 0;
 }
 
+.img-shadow {
+    filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.5));
+}
+
 #main {
     display: flex;
     width: 100vw;
@@ -61,7 +65,7 @@ body {
     transition: border 0.1s ease-in;
 }
 
-.card:hover{
+.card:hover {
     border: 2px solid var(--card-border);
 }
 
@@ -145,4 +149,54 @@ input {
 
 .today-param > p {
     color: var(--gray);
+}
+
+#right {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    align-items: center;
+}
+
+#right > * {
+    margin: 0;
+}
+
+#right > .date,
+#right > .time {
+    font-size: 1.3rem;
+    font-weight: 500;
+}
+
+#today-right {
+    display: grid;
+    grid-template-columns: 120px 80px 1fr;
+    grid-template-rows: repeat(3, 60px);
+}
+
+#today-right > * {
+    margin: 0;
+}
+
+#today-right > img {
+    grid-row: span 2;
+    height: 100%;
+}
+
+#today-right > p {
+    font-size: 0.8rem;
+}
+
+#today-right > p:nth-child(2),
+#today-right > p:nth-child(3) {
+    margin-top: .5rem;
+}
+
+#city-right {
+    font-size: 1.3rem;
+    font-weight: 500;
+    text-align: center;
+    grid-column: span 3;
+    width: 100%;
+    align-self: center;
 }

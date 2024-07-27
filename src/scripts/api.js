@@ -1,4 +1,4 @@
-import { addDays, isAfter, parse, startOfToday } from 'date-fns'
+import { isAfter, parse, startOfToday } from 'date-fns'
 
 const API_BASE_URL = 'https://api.openweathermap.org/data/2.5/'
 const WEATHER_URL = `${API_BASE_URL}weather?`
@@ -16,10 +16,9 @@ function extractHourly(data) {
 }
 
 function extractDaily(data) {
-  const tomorrowStart = addDays(startOfToday(), 1)
   return data.list.filter(forecast => {
     const day = parse(forecast.dt_txt, 'yyyy-MM-dd HH:mm:ss', new Date())
-    return day.getHours() === 15 && isAfter(day, tomorrowStart)
+    return day.getHours() === 15 && isAfter(day, startOfToday())
   })
 }
 
@@ -30,7 +29,8 @@ function formatData(item) {
   const wind = Math.round(item.wind.speed * 10) / 10
   const date = new Date(item.dt * 1000)
   const { icon } = item.weather[0]
-  return { temp, desc, wind, humidity, date, icon }
+  const { temp_min: min, temp_max: max } = item.main
+  return { temp, desc, wind, humidity, date, icon, min, max }
 }
 
 function processCurrentWeather(data) {

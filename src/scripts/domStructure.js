@@ -1,6 +1,7 @@
 import Magnify from '../assets/icons/magnify.svg'
 import Wind from '../assets/icons/wind.svg'
 import Drop from '../assets/icons/drop.svg'
+import { format } from 'date-fns'
 
 const main = document.querySelector('#main')
 
@@ -17,6 +18,7 @@ function createDailyForecastDiv() {
     const temp = document.createElement('p')
     temp.textContent = '20°C'
     const img = document.createElement('img')
+    img.classList.add('img-shadow')
     img.src = 'https://openweathermap.org/img/wn/10d@2x.png'
 
     forecastDiv.appendChild(day)
@@ -97,17 +99,80 @@ function createInputDiv() {
   return inputWrap
 }
 
-export default function createDomStructure() {
+function formatDate(date) {
+  const day = String(date.getDate()).padStart(2, '0')
+  const month = String(date.getMonth() + 1).padStart(2, '0') // getMonth() is zero-based
+  const year = date.getFullYear()
+
+  return `${day}.${month}.${year}`
+}
+
+function createLeftDiv() {
   const leftDiv = document.createElement('div')
   leftDiv.id = 'left'
-  const rightDiv = document.createElement('div')
-  rightDiv.id = 'right'
   const inputWrap = createInputDiv()
-
   const mainForecastDiv = createMainForecastDiv()
 
   leftDiv.appendChild(inputWrap)
   leftDiv.appendChild(mainForecastDiv)
+  return leftDiv
+}
+
+function createTodayRightDiv() {
+  const todayDiv = document.createElement('div')
+  todayDiv.id = 'today-right'
+  const icon = document.createElement('img')
+  icon.classList.add('img-shadow')
+  icon.alt = 'Weather icon'
+  icon.src = 'https://openweathermap.org/img/wn/10d@2x.png'
+  const minP = document.createElement('p')
+  const minTemp = document.createElement('p')
+  const maxP = document.createElement('p')
+  const maxTemp = document.createElement('p')
+
+  minP.textContent = 'min:'
+  minTemp.textContent = '20.89°C'
+  maxP.textContent = 'max:'
+  maxTemp.textContent = '19.80°C'
+
+  const city = document.createElement('p')
+  city.id = 'city-right'
+  city.textContent = 'Warsaw'
+
+  todayDiv.appendChild(icon)
+  todayDiv.appendChild(minP)
+  todayDiv.appendChild(minTemp)
+  todayDiv.appendChild(maxP)
+  todayDiv.appendChild(maxTemp)
+  todayDiv.appendChild(city)
+
+  return todayDiv
+}
+
+function createRightDiv() {
+  const rightDiv = document.createElement('div')
+  rightDiv.id = 'right'
+
+  const today = new Date()
+  const date = document.createElement('p')
+  date.classList.add('date')
+  const time = document.createElement('p')
+  time.classList.add('time')
+
+  date.textContent = format(today, 'dd.MM.yyyy')
+  time.textContent = format(today, 'HH:mm a')
+
+  const todayDiv = createTodayRightDiv()
+
+  rightDiv.appendChild(date)
+  rightDiv.appendChild(time)
+  rightDiv.appendChild(todayDiv)
+  return rightDiv
+}
+
+export default function createDomStructure() {
+  const leftDiv = createLeftDiv()
+  const rightDiv = createRightDiv()
   main.appendChild(leftDiv)
   main.appendChild(rightDiv)
 }

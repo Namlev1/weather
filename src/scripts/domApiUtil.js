@@ -28,6 +28,8 @@ function fillDaily(daily) {
     const dayImg = card.querySelector('img')
     dayImg.src = getIconUrl(daily[id].icon)
   })
+  const dailyToday = dailyCards[0].querySelector(':nth-child(1)')
+  dailyToday.textContent = 'Today'
 }
 
 export default function fillDomWithData(data) {
