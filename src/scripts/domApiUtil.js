@@ -1,3 +1,5 @@
+import { format } from 'date-fns'
+
 function getDayName(date) {
   const options = { weekday: 'short' }
   return date.toLocaleDateString('en-US', options)
@@ -5,6 +7,18 @@ function getDayName(date) {
 
 function getIconUrl(icon) {
   return `https://openweathermap.org/img/wn/${icon}@2x.png`
+}
+
+function fillTodayRight(today) {
+  const div = document.querySelector('#today-right')
+  const img = div.querySelector('img')
+  img.src = getIconUrl(today.icon)
+  const min = div.querySelector(':nth-child(3)')
+  min.textContent = `${today.min}°C`
+  const max = div.querySelector(':nth-child(5)')
+  max.textContent = `${today.max}°C`
+  const city = document.querySelector('#city-right')
+  city.textContent = 'Warsaw' // TODO
 }
 
 function fillToday(today) {
@@ -16,6 +30,7 @@ function fillToday(today) {
   todayWind.textContent = `${today.wind} km/h`
   const todayHumid = document.querySelector('.humid > p')
   todayHumid.textContent = `${today.humidity}%`
+  fillTodayRight(today)
 }
 
 function fillDaily(daily) {
@@ -32,11 +47,23 @@ function fillDaily(daily) {
   dailyToday.textContent = 'Today'
 }
 
+function fillHourly(hourly) {
+  const hourlyCards = document.querySelectorAll('#hourly-forecast > .card')
+  hourlyCards.forEach((card, id) => {
+    const time = card.querySelector(':nth-child(1)')
+    time.textContent = format(hourly[id].date, 'HH a')
+    const dayTemp = card.querySelector(':nth-child(2)')
+    dayTemp.textContent = `${hourly[id].temp}°C`
+    const dayImg = card.querySelector('img')
+    dayImg.src = getIconUrl(hourly[id].icon)
+  })
+}
+
 export default function fillDomWithData(data) {
   const { today } = data
-  const { daily } = data.forecast
-  const { hourly } = data.forecast
+  const { daily, hourly } = data.forecast
 
   fillToday(today)
   fillDaily(daily)
+  fillHourly(hourly)
 }

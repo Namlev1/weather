@@ -11,8 +11,7 @@ const DEFAULT_PARAMS = {
 
 function extractHourly(data) {
   const { list } = data
-  const extracted = list.slice(0, 5)
-  return extracted
+  return list.slice(0, 6)
 }
 
 function extractDaily(data) {
