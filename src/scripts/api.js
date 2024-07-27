@@ -33,7 +33,12 @@ function formatData(item) {
 }
 
 function processCurrentWeather(data) {
-  return formatData(data)
+  const formattedData = formatData(data)
+  const cityName = data.name
+  return {
+    formattedData,
+    cityName
+  }
 }
 
 function processNext4Days(data) {
@@ -71,10 +76,11 @@ async function getForecast(city) {
 }
 
 export default async function getWeatherData(city) {
-  const today = await getWeatherToday(city)
+  const { formattedData: today, cityName } = await getWeatherToday(city)
   const forecast = await getForecast(city)
   return {
     today,
-    forecast
+    forecast,
+    cityName
   }
 }

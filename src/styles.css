@@ -229,6 +229,17 @@ input {
     visibility: hidden;
 }
 
-#load.visible{
+#error{
+    position: absolute;
+    visibility: hidden;
+    color: red;
+    bottom: -60px;
+    left: 20px;
+    font-size: .5rem;
+    width: 300px;
+}
+
+#load.visible,
+#error.visible {
     visibility: visible;
 }

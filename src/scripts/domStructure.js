@@ -32,11 +32,11 @@ function createInputDiv() {
   const cityInput = document.createElement('input')
   cityInput.type = 'text'
   cityInput.value = 'Warsaw'
-  cityInput.addEventListener('keydown', (e) =>  {
+  cityInput.addEventListener('keydown', e => {
     if (e.key === 'Enter') {
       changeCity()
     }
-  });
+  })
 
   const searchBtn = document.createElement('img')
   searchBtn.classList.add('search-btn')
@@ -49,9 +49,14 @@ function createInputDiv() {
   load.src = Loading
   load.id = 'load'
 
+  const inputError = document.createElement('p')
+  inputError.id = 'error'
+  inputError.textContent = 'Invalid city name or network error.'
+
   inputWrap.appendChild(cityInput)
   inputWrap.appendChild(searchBtn)
   inputWrap.appendChild(load)
+  inputWrap.appendChild(inputError)
   return inputWrap
 }
 

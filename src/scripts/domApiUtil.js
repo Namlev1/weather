@@ -59,11 +59,17 @@ function fillHourly(hourly) {
   })
 }
 
+function changeCityName(name) {
+  const cityName = document.querySelector('#city-right')
+  cityName.textContent = name
+}
+
 export default function fillDomWithData(data) {
-  const { today } = data
+  const { today, cityName } = data
   const { daily, hourly } = data.forecast
 
   fillToday(today)
   fillDaily(daily)
   fillHourly(hourly)
+  changeCityName(cityName)
 }
