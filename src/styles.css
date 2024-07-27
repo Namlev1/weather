@@ -37,6 +37,10 @@ body {
 #right {
     flex: 1 1 30%;
     background-color: var(--gray-background);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
 }
 
 #main-forecast {
@@ -63,6 +67,7 @@ body {
     border-radius: 16px;
     padding: .5rem;
     transition: border 0.1s ease-in;
+    width: 100%;
 }
 
 .card:hover {
@@ -79,6 +84,11 @@ body {
 
 .card > *:nth-child(2) {
     color: var(--gray);
+}
+
+.card > img {
+    width: 100%;
+    height: auto;
 }
 
 #input-wrap {
@@ -151,19 +161,11 @@ input {
     color: var(--gray);
 }
 
-#right {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    align-items: center;
-}
-
 #right > * {
     margin: 0;
 }
 
-#right > .date,
-#right > .time {
+.header-text {
     font-size: 1.3rem;
     font-weight: 500;
 }
@@ -171,7 +173,7 @@ input {
 #today-right {
     display: grid;
     grid-template-columns: 120px 80px 1fr;
-    grid-template-rows: repeat(3, 60px);
+    grid-template-rows: repeat(2, 60px) min-content;
 }
 
 #today-right > * {
@@ -185,6 +187,7 @@ input {
 
 #today-right > p {
     font-size: 0.8rem;
+    color: var(--gray);
 }
 
 #today-right > p:nth-child(2),
@@ -197,6 +200,22 @@ input {
     font-weight: 500;
     text-align: center;
     grid-column: span 3;
+}
+
+#hourly-forecast {
     width: 100%;
-    align-self: center;
+    display: grid;
+    grid-template: min-content repeat(2, 210px) / repeat(3, 1fr);
+    gap: .8rem;
+}
+
+#hourly-forecast > p {
+    grid-column: span 3;
+    margin: 0;
+    text-align: center;
+}
+
+#hourly-forecast > .card {
+    box-sizing: border-box;
+    border: 2px solid var(--card-border);
 }
