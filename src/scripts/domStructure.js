@@ -12,12 +12,9 @@ function createCard() {
   forecastDiv.classList.add('card')
 
   const day = document.createElement('p')
-  day.textContent = 'Wed'
   const temp = document.createElement('p')
-  temp.textContent = '20°C'
   const img = document.createElement('img')
   img.classList.add('img-shadow')
-  img.src = 'https://openweathermap.org/img/wn/10d@2x.png'
 
   forecastDiv.appendChild(day)
   forecastDiv.appendChild(temp)
@@ -77,20 +74,16 @@ function createTodayRightDiv() {
   const icon = document.createElement('img')
   icon.classList.add('img-shadow')
   icon.alt = 'Weather icon'
-  icon.src = 'https://openweathermap.org/img/wn/10d@2x.png'
   const minP = document.createElement('p')
   const minTemp = document.createElement('p')
   const maxP = document.createElement('p')
   const maxTemp = document.createElement('p')
 
   minP.textContent = 'min:'
-  minTemp.textContent = '20.89°C'
   maxP.textContent = 'max:'
-  maxTemp.textContent = '19.80°C'
 
   const city = document.createElement('p')
   city.id = 'city-right'
-  city.textContent = 'Warsaw'
 
   todayDiv.appendChild(icon)
   todayDiv.appendChild(minP)
@@ -126,12 +119,10 @@ function createMainForecastDiv() {
   todayDiv.id = 'today-forecast'
 
   const todayTemp = document.createElement('h1')
-  todayTemp.textContent = '20°C'
   todayTemp.id = 'main-temp'
 
   const todayDesc = document.createElement('p')
   todayDesc.id = 'main-desc'
-  todayDesc.textContent = 'Cloudy'
 
   const windDiv = document.createElement('div')
   windDiv.classList.add('today-param')
@@ -140,7 +131,6 @@ function createMainForecastDiv() {
   windImg.alt = 'Wind image'
   windImg.src = Wind
   const todayWind = document.createElement('p')
-  todayWind.textContent = '8.9 km/h'
   windDiv.appendChild(windImg)
   windDiv.appendChild(todayWind)
 
@@ -151,7 +141,6 @@ function createMainForecastDiv() {
   humidImg.alt = 'Wind image'
   humidImg.src = Drop
   const todayHumid = document.createElement('p')
-  todayHumid.textContent = '80%'
   humidDiv.appendChild(humidImg)
   humidDiv.appendChild(todayHumid)
 
@@ -201,9 +190,30 @@ function createRightDiv() {
   return rightDiv
 }
 
-export default function createDomStructure() {
+function createLoadingPage() {
+  const div = document.createElement('div')
+  div.id = 'loading-page'
+  div.classList.add('visible')
+  const loadGif = document.createElement('img')
+  loadGif.alt = 'Loading icon'
+  loadGif.src = Loading
+  div.appendChild(loadGif)
+  return div
+}
+
+export function createDomStructure() {
+  const loadingPage = createLoadingPage()
   const leftDiv = createLeftDiv()
   const rightDiv = createRightDiv()
+  main.appendChild(loadingPage)
   main.appendChild(leftDiv)
   main.appendChild(rightDiv)
+}
+
+export function hideLoading() {
+  const loading = document.querySelector('#loading-page')
+  loading.style.opacity = 0
+  setTimeout(() => {
+    loading.remove()
+  }, 600)
 }
