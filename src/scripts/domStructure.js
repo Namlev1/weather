@@ -1,4 +1,3 @@
-import { format } from 'date-fns'
 import Magnify from '../assets/icons/magnify.svg'
 import Wind from '../assets/icons/wind.svg'
 import Drop from '../assets/icons/drop.svg'
@@ -171,14 +170,10 @@ function createRightDiv() {
   const rightDiv = document.createElement('div')
   rightDiv.id = 'right'
 
-  const today = new Date()
   const date = document.createElement('p')
   date.classList.add('header-text')
   const time = document.createElement('p')
   time.classList.add('header-text')
-
-  date.textContent = format(today, 'dd.MM.yyyy')
-  time.textContent = format(today, 'HH:mm a')
 
   const todayDiv = createTodayRightDiv()
   const hourlyForecast = createHourlyForecastDiv()

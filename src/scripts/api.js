@@ -32,12 +32,38 @@ function formatData(item) {
   return { temp, desc, wind, humidity, date, icon, min, max }
 }
 
+function getCityTime(timestamp, timezoneOffset) {
+  const date = new Date((timestamp + timezoneOffset) * 1000)
+
+  const year = date.getUTCFullYear()
+  const month = String(date.getUTCMonth() + 1).padStart(2, '0')
+  const day = String(date.getUTCDate()).padStart(2, '0')
+  let hours = date.getUTCHours()
+  const minutes = String(date.getUTCMinutes()).padStart(2, '0')
+
+  const ampm = hours >= 12 ? 'PM' : 'AM'
+  hours %= 12
+  hours = hours || 12 // the hour '0' should be '12'
+  const formattedHours = String(hours).padStart(2, '0')
+
+  const formattedDate = `${day}.${month}.${year}`
+  const formattedTime = `${formattedHours}:${minutes} ${ampm}`
+
+  return { formattedDate, formattedTime }
+}
+
 function processCurrentWeather(data) {
   const formattedData = formatData(data)
   const cityName = data.name
+  const { formattedDate: date, formattedTime: time } = getCityTime(
+    data.dt,
+    data.timezone
+  )
   return {
     formattedData,
-    cityName
+    cityName,
+    date,
+    time
   }
 }
 
@@ -76,11 +102,18 @@ async function getForecast(city) {
 }
 
 export default async function getWeatherData(city) {
-  const { formattedData: today, cityName } = await getWeatherToday(city)
+  const {
+    formattedData: today,
+    cityName,
+    date,
+    time
+  } = await getWeatherToday(city)
   const forecast = await getForecast(city)
   return {
     today,
     forecast,
-    cityName
+    cityName,
+    date,
+    time
   }
 }

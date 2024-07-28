@@ -21,6 +21,13 @@ function fillTodayRight(today) {
   city.textContent = 'Warsaw'
 }
 
+function fillDate(date, time) {
+  const dateP = document.querySelector('#right :nth-child(1)')
+  dateP.textContent = date
+  const timeP = document.querySelector('#right :nth-child(2)')
+  timeP.textContent = time
+}
+
 function fillToday(today) {
   const todayTemp = document.querySelector('#main-temp')
   todayTemp.textContent = `${today.temp}°C`
@@ -65,9 +72,10 @@ function changeCityName(name) {
 }
 
 export default function fillDomWithData(data) {
-  const { today, cityName } = data
+  const { today, cityName, date, time } = data
   const { daily, hourly } = data.forecast
 
+  fillDate(date, time)
   fillToday(today)
   fillDaily(daily)
   fillHourly(hourly)
